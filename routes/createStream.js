@@ -19,6 +19,8 @@ export async function mint(req, res, err) {
 
     let mongoClient = await getMongoDbClient();
     let createdJob = await mongoClient.collection('jobs').insertOne({
+        name,
+        symbol,
         mintedCollection
     })
 
