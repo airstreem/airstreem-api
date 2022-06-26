@@ -35,7 +35,6 @@ export async function createNFTs(req, res, err) {
             mintedCollection,
             parentHolders
         })
-        console.log(createdJob)
 
         return res.json({name, symbol, childCollection:mintedCollection, parentHolders, ...createdJob})
     } catch (err) {
