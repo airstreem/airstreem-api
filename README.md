@@ -4,6 +4,7 @@
 * `cp .env.sample .env` and add keys
 * `npm i`
 * `npm install -g truffle json`
+* `truffle compile` (remove "type":"module" in package.json)
 * `npm start`
 
 ### Endpoints
