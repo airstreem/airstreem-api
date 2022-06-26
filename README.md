@@ -3,6 +3,7 @@
 ### Setup
 * `cp .env.sample .env` and add keys
 * `npm i`
+* `npm install -g truffle json`
 * `npm start`
 
 ### Endpoints
@@ -11,7 +12,7 @@
 
 ### Endpoints
 
-1. POST `/createNFTs`
+1. POST `/createNFTs` and pull out `insertedId`. Metadata is uploaded to IPFS and returned as part of response
 ```
 curl --location --request POST 'localhost:3001/createNFTs' \
 --header 'Content-Type: application/json' \
@@ -37,7 +38,7 @@ curl --location --request POST 'localhost:3001/createNFTs' \
 }'
 ```
 
-2. POST `/createCoins`
+2. POST `/createCoins`. `value.coinContract` is the contract to which tokens backing the NFT are minted
 ```
 {
     "id": "<insertedId>"

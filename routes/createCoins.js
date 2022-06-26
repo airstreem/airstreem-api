@@ -45,7 +45,8 @@ export async function createCoins(req, res, err) {
             stdout.lastIndexOf("Deployed at:"),
             stdout.indexOf("Initialize")
         ).split(" ")
-        let deployedContract = deployArr[deployArr.length - 1]
+        let deployedContract = deployArr[deployArr.length - 1].trim()
+        console.log(`Contract deployed at - ${deployedContract}`)
 
         // Update job in database
         let updatedJob = await mongoClient.collection('jobs').findOneAndUpdate(
@@ -65,6 +66,6 @@ export async function createCoins(req, res, err) {
     } catch(err) {
         console.log(`err - ${err}`)
         await exec(`json -I -f package.json -e 'this.type=\"module\"'`)
-        res.status(400).json({"error": `${err}`})
+        res.status(400).json({"error": `${err}`, "contract":"0xeecf07e9FA23Fdc04C0c026aAb2a157Af1fAd520"})
     }
 }
