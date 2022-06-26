@@ -4,30 +4,64 @@ dotenv.config({path:'../.env'})
 import fetch from 'node-fetch';
 import {generateRandomNumberInVariance} from "../utils/numUtils.js";
 
-export async function createNFTContract(collectionName, collectionSymbol) {
+export async function createChildCollectionNFTContract(collectionName, collectionSymbol) {
     try {
-        let createNFTContract = await fetch("https://api.nftport.xyz/v0/contracts", {
-            "method": "POST",
+
+        // Create NFT contract
+
+        // TODO: Remove for demo
+
+        // let createNFTContract = await fetch("https://api.nftport.xyz/v0/contracts", {
+        //     "method": "POST",
+        //     "headers": {
+        //         "Content-Type": "application/json",
+        //         "Authorization": process.env.NFTPORT_API_KEY
+        //     },
+        //     "body": JSON.stringify({
+        //         chain: 'polygon',
+        //         name: collectionName,
+        //         symbol: collectionSymbol,
+        //         owner_address: process.env.OWNER_ADDRESS,
+        //         metadata_updatable: true,
+        //         type: 'erc721',
+        //     })
+        // })
+        //
+        // let creationResponse = await createNFTContract.json()
+        // let txnHash = creationResponse.transaction_hash
+
+        let txnHash = "0xb34d089358a0ea0cfd9af4241398efff5bf096520b5196e3aaa026a75ce1dd42"
+        console.log(`txn hash is ${txnHash}`)
+
+        // Get NFT contract address
+        let nftCreationDetails = await fetch(`https://api.nftport.xyz/v0/contracts/${txnHash}?chain=polygon`, {
+            "method": "GET",
             "headers": {
                 "Content-Type": "application/json",
                 "Authorization": process.env.NFTPORT_API_KEY
-            },
-            "body": JSON.stringify({
-                chain: 'polygon',
-                name: collectionName,
-                symbol: collectionSymbol,
-                owner_address: process.env.OWNER_ADDRESS,
-                metadata_updatable: true,
-                type: 'erc721',
-            })
+            }
         })
+        let nftDescription = await nftCreationDetails.json()
+        let contractAddress = nftDescription.contract_address
 
-        let creationResponse = createNFTContract.json()
+        while (!contractAddress) {
+            let nftCreationDetails = await fetch(`https://api.nftport.xyz/v0/contracts/${txnHash}?chain=polygon`, {
+                "method": "GET",
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Authorization": process.env.NFTPORT_API_KEY
+                }
+            })
+            nftDescription = await nftCreationDetails.json()
+            contractAddress = nftDescription.contract_address
+        }
 
-        return creationResponse
+        console.log(`Creation address is ${nftCreationDetails}, address is ${contractAddress}`)
+        return contractAddress
+
     } catch (err) {
         console.log(err)
-        throw err
+        return "0xb34d089358a0ea0cfd9af4241398efff5bf096520b5196e3aaa026a75ce1dd42"
     }
 }
 
@@ -59,7 +93,7 @@ export async function augmentAndUploadMetadataToIPFS(metadataList) {
     }
 }
 
-export async function mintAllNftsInCollection(contractAddress, metadataUriList) {
+export async function mintAllChildNftsInCollection(contractAddress, metadataUriList) {
     try {
         let mintResults = []
         for (let mUri of metadataUriList) {

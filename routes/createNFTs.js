@@ -1,7 +1,7 @@
 import dotenv  from "dotenv"
 dotenv.config({path:'../.env'})
 
-import {augmentAndUploadMetadataToIPFS, createNFTContract, mintAllNftsInCollection} from "../service/nft.js";
+import {augmentAndUploadMetadataToIPFS, createChildCollectionNFTContract, mintAllChildNftsInCollection} from "../service/nft.js";
 import {getMongoDbClient} from "../db/mongo.js";
 
 export async function createNFTs(req, res, err) {
@@ -23,10 +23,13 @@ export async function createNFTs(req, res, err) {
             return
         }
 
-        // let contractAddress = await createNFTContract(name, symbol)
-        let contractAddress = "0x80d2ab2b94969204ccfc86267ef09d8010e1b8b8"
+
+        // NOTE: This address is for the demo. IRL we want to get a new contract address
+        // for each new collection with its unique name and token
+        let contractAddress = await createChildCollectionNFTContract(name, symbol)
+
         let uploadedMetadataList = await augmentAndUploadMetadataToIPFS(childCollectionMetadata)
-        let mintedCollection = await mintAllNftsInCollection(contractAddress, uploadedMetadataList)
+        let mintedCollection = await mintAllChildNftsInCollection(contractAddress, uploadedMetadataList)
 
         let mongoClient = await getMongoDbClient();
         let createdJob = await mongoClient.collection('jobs').insertOne({
