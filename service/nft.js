@@ -59,7 +59,7 @@ export async function augmentAndUploadMetadataToIPFS(metadataList) {
     }
 }
 
-export async function mintCollection(contractAddress, metadataUriList) {
+export async function mintAllNftsInCollection(contractAddress, metadataUriList) {
     try {
         let mintResults = []
         for (let mUri of metadataUriList) {

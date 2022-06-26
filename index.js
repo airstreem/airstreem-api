@@ -1,6 +1,8 @@
 import "dotenv/config";
 import express from "express";
-import {mintCollection} from "./routes/mintCollection.js";
+import {createNFTs} from "./routes/createNFTs.js";
+import {createCoins} from "./routes/createCoins.js";
+
 const app = express();
 app.use(express.json());
 
@@ -8,8 +10,8 @@ app.get('/', (req, res) => {
     res.json({"message": "welcome to airstreem service"})
 });
 
-app.all('/createCoins', mintCollection)
-app.all('/createTokens', mintCollection)
+app.all('/createNFTs', createNFTs)
+app.all('/createCoins', createCoins)
 
 // starting the server
 let PORT = 3001
