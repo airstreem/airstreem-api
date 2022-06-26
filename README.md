@@ -44,3 +44,10 @@ curl --location --request POST 'localhost:3001/createNFTs' \
     "id": "<insertedId>"
 }
 ```
+
+3. POST `/streamCoins`. `value.addressToFlowHash` maps the hash of SuperFluid stream hashes to the addresses tokens (eh called it coins) are being streamed to
+```
+{
+    "id": "<insertedId>"
+}
+```
