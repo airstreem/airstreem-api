@@ -34,11 +34,10 @@ export async function createCoins(req, res, err) {
 
         // Execute truffle to deploy the contract
         const execRes = await exec(`json -I -f package.json -e 'this.type=\"commonjs\"' &&
-          truffle exec migrations/1_initial_migration.js --network ${network} && 
+          truffle exec migrations/1_initial_migration.js --network ${network} &&
           json -I -f package.json -e 'this.type=\"module\"'\n`,
             {env: {'name': coinName, 'symbol':coinSymbol, 'receiver':receiver}}
         )
-    console.log(execRes.stderr)
 
         // Get the address contract is deployed at
         let stdout = execRes.stdout
@@ -50,11 +49,13 @@ export async function createCoins(req, res, err) {
 
         // Update job in database
         let updatedJob = await mongoClient.collection('jobs').findOneAndUpdate(
-            {"_id":id},
+            {"_id":ObjectID(id)},
             {
-                "coinContract" : deployedContract,
-                "coinName": coinName,
-                "coinSymbol" : coinSymbol
+                $set:{
+                    "coinContract" : deployedContract,
+                    "coinName": coinName,
+                    "coinSymbol" : coinSymbol
+                }
             },
             {new: true}
         );
