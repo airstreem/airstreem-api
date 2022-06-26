@@ -10,7 +10,7 @@ async function startFlow(holderAddress, contractAddress) {
 
     let provider = new ethers.providers.JsonRpcProvider(process.env.MATIC_PROVIDER_URL);
     const sf = await Framework.create({
-        networkName: "polygon-mumbai",
+        networkName: "polygon-mainnet",
         provider: provider,
         customSubgraphQueriesEndpoint: "",
         dataMode: "WEB3_ONLY"

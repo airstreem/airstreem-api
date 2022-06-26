@@ -62,7 +62,7 @@ module.exports = {
     //
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
-    mumbai: {
+    polygon: {
       provider: () => new HDWalletProvider({
         privateKeys: [process.env.PRIVATE_KEY],
         providerOrUrl: process.env.MATIC_PROVIDER_URL

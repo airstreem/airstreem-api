@@ -30,7 +30,7 @@ export async function createCoins(req, res, err) {
         let coinSymbol = ('ast' + job.symbol).trim()
 
         let receiver = process.env.OWNER_ADDRESS
-        let network = "mumbai"
+        let network = "polygon"
 
         // Execute truffle to deploy the contract
         const execRes = await exec(`json -I -f package.json -e 'this.type=\"commonjs\"' &&
