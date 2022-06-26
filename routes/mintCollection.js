@@ -1,10 +1,10 @@
 import dotenv  from "dotenv"
 dotenv.config({path:'../.env'})
 
-import {augmentAndUploadMetadataToIPFS, createNFTContract, mintCollection} from "../api/nft.js";
+import {augmentAndUploadMetadataToIPFS, createNFTContract, mintCollection} from "../service/nft.js";
 import {getMongoDbClient} from "../db/mongo.js";
 
-export async function mint(req, res, err) {
+export async function mintCollection(req, res, err) {
 
     let data = req.body
 
@@ -24,5 +24,5 @@ export async function mint(req, res, err) {
         mintedCollection
     })
 
-    return res.json(createdJob)
+    return res.json({name, symbol, mintedCollection, ...createdJob})
 }

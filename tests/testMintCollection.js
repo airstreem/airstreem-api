@@ -1,8 +1,8 @@
 import dotenv  from "dotenv"
 dotenv.config({path:'../.env'})
-import {createNFTContract} from "../api/nft.js";
+import {createNFTContract} from "../service/nft.js";
 import {makeId} from "../utils/numUtils.js";
-import {mint} from "../routes/createStream.js";
+import {mintCollection} from "../routes/mintCollection.js";
 
 let collectionName = ('testairstreem' + makeId(4)).toUpperCase();
 let collectionSymbol = ('TASM' + makeId(2)).toUpperCase();
@@ -10,7 +10,7 @@ let collectionSymbol = ('TASM' + makeId(2)).toUpperCase();
 let res, err = await createNFTContract(collectionName, collectionSymbol)
 console.log(err)
 
-await mint(
+await mintCollection(
     {
         body: {
             name:('testairstreem' + makeId(4)).toUpperCase(),
