@@ -1,10 +1,13 @@
 import "dotenv/config";
 import express from "express";
+import cors from "cors"
+
 import {createNFTs} from "./routes/createNFTs.js";
 import {createCoins} from "./routes/createCoins.js";
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 app.get('/', (req, res) => {
     res.json({"message": "welcome to airstreem service"})
