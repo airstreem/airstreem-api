@@ -26,17 +26,19 @@ export async function createCoins(req, res, err) {
             return
         }
 
-        let coinName = job.name + ' Token'
-        let coinSymbol = 'ast' + job.symbol
+        let coinName = job.name + 'Token'
+        let coinSymbol = ('ast' + job.symbol).trim()
 
         let receiver = process.env.OWNER_ADDRESS
         let network = "mumbai"
 
         // Execute truffle to deploy the contract
         const execRes = await exec(`json -I -f package.json -e 'this.type=\"commonjs\"' &&
-          name=${coinName} symbol=${coinSymbol} receiver=${receiver} truffle exec migrations/1_initial_migration.js --network ${network} && 
-          json -I -f package.json -e 'this.type=\"module\"'\n`
+          truffle exec migrations/1_initial_migration.js --network ${network} && 
+          json -I -f package.json -e 'this.type=\"module\"'\n`,
+            {env: {'name': coinName, 'symbol':coinSymbol, 'receiver':receiver}}
         )
+    console.log(execRes.stderr)
 
         // Get the address contract is deployed at
         let stdout = execRes.stdout
